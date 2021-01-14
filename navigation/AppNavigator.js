@@ -13,7 +13,7 @@ import { loadUser, setAuthLoading } from '../actions/authActions';
 import { setLoading } from '../actions/listActions';
 import setAuthTokenHeader from '../utils/setAuthTokenHeader';
 
-const AppNavigator = ({ loadUser, setLoading, setAuthLoading }) => {
+const AppNavigator = ({ loadUser, setAuthLoading }) => {
   useEffect(() => {
     const loadUserData = async () => {
       try {
@@ -22,7 +22,6 @@ const AppNavigator = ({ loadUser, setLoading, setAuthLoading }) => {
         const { token, user_id, username } = userData;
         setAuthTokenHeader(token);
         setAuthLoading();
-        // setLoading(true);
         loadUser(user_id, username, token);
         // console.log(user_id, username, token);
       } catch (err) {
@@ -39,20 +38,24 @@ const AppNavigator = ({ loadUser, setLoading, setAuthLoading }) => {
 
   return (
     <NavigationContainer>
-      <Spinner
-        visible={authLoading}
-        animation='fade'
-        size='large'
-        color={Colors.amberDark}
-        overlayColor='rgba(197, 202, 233, .5)' // Colors.indigoLight
-      />
-      <Spinner
-        visible={listLoading}
-        animation='fade'
-        size='large'
-        color={Colors.amberDark}
-        overlayColor='rgba(197, 202, 233, .5)' // Colors.indigoLight
-      />
+      {Platform.OS === 'android' &&
+        <Spinner
+          visible={authLoading}
+          animation='fade'
+          size='large'
+          color={Colors.amberDark}
+          overlayColor='rgba(197, 202, 233, .5)' // Colors.indigoLight
+        />
+      }
+      {Platform.OS === 'android' &&
+        <Spinner
+          visible={listLoading}
+          animation='fade'
+          size='large'
+          color={Colors.amberDark}
+          overlayColor='rgba(197, 202, 233, .5)' // Colors.indigoLight
+        />
+      }
       {!isAuth && <AuthNavigator />}
       {isAuth && <AppDrawerNavigator />}
       {/* {isAuth && <ShoppingListsNavigator />} */}
@@ -63,8 +66,7 @@ const AppNavigator = ({ loadUser, setLoading, setAuthLoading }) => {
 
 AppNavigator.propTypes = {
   loadUser: PropTypes.func.isRequired,
-  setLoading: PropTypes.func.isRequired,
   setAuthLoading: PropTypes.func.isRequired,
 };
 
-export default connect(null, { loadUser, setLoading, setAuthLoading })(AppNavigator);
+export default connect(null, { loadUser, setAuthLoading })(AppNavigator);

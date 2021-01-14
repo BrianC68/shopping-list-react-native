@@ -19,6 +19,7 @@ import CurrentListContext from '../context/currentListContext';
 const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading, getList, clearCurrent, user }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const currentListContext = useContext(CurrentListContext);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const { setCurrentListTitle } = currentListContext;
 
@@ -85,9 +86,17 @@ const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading
     />
   );
 
+  const reLoadLists = async () => {
+    setIsRefreshing(true);
+    await getLists();
+    setIsRefreshing(false);
+  }
+
   return (
     <View style={styles.backGround}>
       <FlatList
+        onRefresh={reLoadLists}
+        refreshing={isRefreshing}
         data={lists}
         keyExtractor={item => item.id.toString()}
         renderItem={itemData =>

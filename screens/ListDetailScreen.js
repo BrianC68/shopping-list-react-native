@@ -6,7 +6,8 @@ import {
   View,
   SafeAreaView,
   TouchableOpacity,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -16,14 +17,16 @@ import Toast from 'react-native-toast-message';
 
 import Colors from '../constants/Colors';
 import CurrentListItem from '../components/list/CurrentListItem';
-import { setLoading, deleteList, clearListsMessage, setSortOrder, sortList, clearListsError } from '../actions/listActions';
+import { setLoading, deleteList, clearListsMessage, setSortOrder, sortList, clearListsError, getList } from '../actions/listActions';
 import HeaderButton from '../components/UI/HeaderButton';
 import ModalComponent from '../components/UI/ModalComponent';
 import ShareListModalContent from '../components/list/ShareListModalContent';
 
 const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, user, message,
-  clearListsMessage, setSortOrder, sortList, sortOrder, clearListsError }) => {
+  clearListsMessage, setSortOrder, sortList, sortOrder, clearListsError, getList }) => {
+
   const [modalVisible, setModalVisible] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const error = useSelector(state => state.list.error);
 
   const itemsOnCurrentList = currentList.list_items.filter(item => item.on_list);
@@ -161,6 +164,12 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
     sortList(sortBy);
   };
 
+  const reLoadList = async () => {
+    setIsRefreshing(true);
+    await getList(currentList.id);
+    setIsRefreshing(false);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.screen}>
@@ -186,6 +195,8 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
         </View>
         {itemsOnCurrentList.length === 0 && emptyList()}
         <FlatList
+          onRefresh={reLoadList}
+          refreshing={isRefreshing}
           data={itemsOnCurrentList}
           keyExtractor={item => item.id.toString()}
           renderItem={itemData => (
@@ -253,6 +264,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   empty: {
+    marginTop: Platform.OS === 'android' ? 100 : 40,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
@@ -261,6 +273,7 @@ const styles = StyleSheet.create({
 });
 
 ListDetailScreen.propTypes = {
+  getList: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
   deleteList: PropTypes.func.isRequired,
   clearListsMessage: PropTypes.func.isRequired,
@@ -278,6 +291,7 @@ const mapStateToProps = state => ({
 })
 
 export default connect(mapStateToProps, {
+  getList,
   setLoading,
   deleteList,
   clearListsMessage,

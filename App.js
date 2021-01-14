@@ -66,20 +66,8 @@ export default function App() {
     }, 2000)
   };
 
-  // const loadFonts = async () => {
-  //   await fetchFonts();
-  //   await SplashScreen.hideAsync();
-  // }
-
   if (!fontLoaded) {
     return (
-      // <AppLoading
-      //   startAsync={fetchFonts}
-      //   onFinish={() => {
-      //     setFontLoaded(true);
-      //   }}
-      //   onError={(err) => console.log(err)}
-      // />
       <Text></Text>
     )
   };
