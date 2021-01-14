@@ -21,6 +21,7 @@ import {
   SET_LOADING,
   SET_SORT_ORDER,
   CLEAR_LISTS_MESSAGE,
+  NEW_DEPTARTMENT,
 } from '../actions/types';
 
 const initialState = {
@@ -30,6 +31,7 @@ const initialState = {
   loading: false,
   sort_order: '',
   message: '',
+  newDept: false,
 }
 
 const list = (state = initialState, action) => {
@@ -227,6 +229,11 @@ const list = (state = initialState, action) => {
           ]
         },
         loading: false,
+      }
+    case NEW_DEPTARTMENT:
+      return {
+        ...state,
+        newDept: action.payload,
       }
     case CLEAR_CURRENT:
       return {

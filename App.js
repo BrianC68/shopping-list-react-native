@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Provider } from 'react-redux';
-import AppLoading from 'expo-app-loading';
+// import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import AppNavigator from './navigation/AppNavigator';
 import Toast from 'react-native-toast-message';

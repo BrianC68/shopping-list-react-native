@@ -8,9 +8,9 @@ import Input from '../components/UI/Input';
 import ModalComponent from '../components/UI/ModalComponent';
 import AddNewDeptModalContent from '../components/list/AddNewDeptModalContent';
 import Colors from '../constants/Colors';
-import { addItem, setLoading, clearListsMessage, clearListsError } from '../actions/listActions';
+import { addItem, setLoading, clearListsError, setNewDepartment } from '../actions/listActions';
 
-const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoading, error, clearListsError }) => {
+const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoading, error, clearListsError, setNewDepartment, newDept }) => {
   const [itemDesc, setItemDesc] = useState('');
   const [quantity, setQuantity] = useState('');
   const [department, setDepartment] = useState(0);
@@ -44,6 +44,7 @@ const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoa
     setItemDesc('');
     setQuantity('');
     setDepartment(0);
+    setNewDepartment(false);
   }
 
   const toggleModal = () => {
@@ -88,7 +89,7 @@ const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoa
             selectedValue={department}
             mode='dialog' // Default
             dropdownIconColor={Colors.indigo}
-            onValueChange={(itemValue, itemIndex) => setDepartment(itemValue)}
+            onValueChange={(itemValue, itemIndex) => setDepartment(newDept ? departments[0].id : itemValue)}
           >
             <Picker.Item label='Select Department (Optional)' value={0} />
             {departments.map(dept => <Picker.Item label={dept.name} value={dept.id} key={dept.id} />)}
@@ -163,6 +164,7 @@ const mapStateToProps = state => ({
   userID: state.auth.user.id,
   // message: state.list.message,
   error: state.list.error,
+  newDept: state.list.newDept,
 });
 
 AddListItemScreen.propTypes = {
@@ -170,6 +172,7 @@ AddListItemScreen.propTypes = {
   setLoading: PropTypes.func.isRequired,
   // clearListsMessage: PropTypes.func.isRequired,
   clearListsError: PropTypes.func.isRequired,
+  setNewDepartment: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, { addItem, setLoading, clearListsError })(AddListItemScreen);
+export default connect(mapStateToProps, { addItem, setLoading, clearListsError, setNewDepartment })(AddListItemScreen);

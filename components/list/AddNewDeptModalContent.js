@@ -5,9 +5,9 @@ import { connect } from 'react-redux';
 
 import Colors from '../../constants/Colors';
 import Input from '../UI/Input';
-import { addDepartment, setLoading } from '../../actions/listActions';
+import { addDepartment, setNewDepartment, setLoading } from '../../actions/listActions';
 
-const AddNewDeptModalContent = ({ closeModal, addDepartment, setLoading, currentListID, userID }) => {
+const AddNewDeptModalContent = ({ closeModal, addDepartment, setNewDepartment, setLoading, currentListID, userID }) => {
   const [deptName, setDeptName] = useState('');
 
   const onAddDept = () => {
@@ -20,6 +20,7 @@ const AddNewDeptModalContent = ({ closeModal, addDepartment, setLoading, current
         shopping_list: currentListID,
       }
       setLoading(true);
+      setNewDepartment(true);
       addDepartment(newDept);
       setDeptName('');
       closeModal();
@@ -49,6 +50,7 @@ const AddNewDeptModalContent = ({ closeModal, addDepartment, setLoading, current
 AddNewDeptModalContent.propTypes = {
   addDepartment: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
+  setNewDepartment: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
@@ -56,4 +58,4 @@ const mapStateToProps = state => ({
   currentListID: state.list.currentList.id,
 });
 
-export default connect(mapStateToProps, { addDepartment, setLoading })(AddNewDeptModalContent);
+export default connect(mapStateToProps, { addDepartment, setLoading, setNewDepartment })(AddNewDeptModalContent);

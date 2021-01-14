@@ -22,6 +22,7 @@ import {
   CLEAR_LISTS_MESSAGE,
   CLEAR_LISTS,
   SET_LOADING,
+  NEW_DEPTARTMENT,
 } from '../actions/types';
 
 const jsonHeader = {
@@ -275,6 +276,13 @@ export const deleteDepartment = (id) => async dispatch => {
     })
   }
 }
+
+export const setNewDepartment = (bool) => dispatch => {
+  dispatch({
+    type: NEW_DEPTARTMENT,
+    payload: bool,
+  })
+};
 
 export const clearCurrent = () => dispatch => {
   dispatch({
