@@ -4,11 +4,9 @@ import PropTypes from 'prop-types';
 import {
   View,
   StyleSheet,
-  Text,
   FlatList,
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
-import { FontAwesome5 } from '@expo/vector-icons';
 
 import Colors from '../constants/Colors';
 import HeaderButton from '../components/UI/HeaderButton';
@@ -18,7 +16,7 @@ import ModalComponent from '../components/UI/ModalComponent';
 import AddNewListModalContent from '../components/list/AddNewListModalContent';
 import CurrentListContext from '../context/currentListContext';
 
-const ShoppingListsScreen = ({ navigation, list: { lists, message }, getLists, setLoading, getList, clearCurrent, user }) => {
+const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading, getList, clearCurrent, user }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const currentListContext = useContext(CurrentListContext);
 
@@ -87,15 +85,6 @@ const ShoppingListsScreen = ({ navigation, list: { lists, message }, getLists, s
     />
   );
 
-  // if (!lists || lists.length === 0) {
-  //   return (
-  //     <View style={styles.noLists}>
-  //       <Text style={styles.text}>You have no lists, why not start one!</Text>
-  //       {addListModal}
-  //     </View>
-  //   )
-  // }
-
   return (
     <View style={styles.backGround}>
       <FlatList
@@ -148,16 +137,11 @@ ShoppingListsScreen.propTypes = {
   clearCurrent: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
   list: PropTypes.object.isRequired,
-  error: PropTypes.object,
-  message: PropTypes.string,
-  // clearListsError: PropTypes.func.isRequired,
-  // clearListsMessage: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
   list: state.list,
   user: state.auth.user.username,
-  // loading: state.list.loading,
 })
 
 export default connect(mapStateToProps, { getLists, setLoading, getList, clearCurrent })(ShoppingListsScreen);

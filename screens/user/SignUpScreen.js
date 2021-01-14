@@ -12,14 +12,15 @@ import {
 } from 'react-native';
 
 import Input from '../../components/UI/Input';
-import { clearError, register, setAuthLoading } from '../../actions/authActions';
+import { register, setAuthLoading } from '../../actions/authActions';
 import Colors from '../../constants/Colors';
 
-const SignUpScreen = ({ navigation, register, setAuthLoading, clearError }) => {
+const SignUpScreen = ({ register, setAuthLoading }) => {
   const [regUsername, setUserName] = useState('');
   const [regPassword, setPassword] = useState('');
 
   const error = useSelector(state => state.auth.error);
+  const message = useSelector(state => state.auth.message);
 
   const onRegister = () => {
     if (regUsername === '' || regPassword === '') {
@@ -33,11 +34,6 @@ const SignUpScreen = ({ navigation, register, setAuthLoading, clearError }) => {
       setAuthLoading();
       setUserName('');
       setPassword('');
-      if (error) {
-        navigation.navigate('Login');
-      } else {
-        clearError();
-      }
     }
   }
 
@@ -52,6 +48,11 @@ const SignUpScreen = ({ navigation, register, setAuthLoading, clearError }) => {
         {error &&
           <View>
             <Text style={styles.error}>{error}</Text>
+          </View>
+        }
+        {message !== '' &&
+          <View>
+            <Text style={styles.error}>{message}</Text>
           </View>
         }
         <View style={styles.form}>
@@ -122,7 +123,6 @@ const styles = StyleSheet.create({
 SignUpScreen.propTypes = {
   register: PropTypes.func.isRequired,
   setAuthLoading: PropTypes.func.isRequired,
-  clearError: PropTypes.func.isRequired,
 }
 
-export default connect(null, { register, setAuthLoading, clearError })(SignUpScreen);
+export default connect(null, { register, setAuthLoading })(SignUpScreen);

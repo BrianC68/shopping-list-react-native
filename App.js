@@ -31,8 +31,15 @@ const toastConfig = {
       </View>
     </View>
   ),
-  // error: () => {},
-  // info: () => {},
+  error: ({ text1, props, ...rest }) => (
+    <View style={styles.errorToast}>
+      <View style={styles.innerErrorToast}>
+        <View style={styles.icon}><FontAwesome5 name="exclamation-circle" size={24} color='red' /></View>
+        <Text style={styles.errorToastText}>{text1}</Text>
+        {/* <Text>{text2}</Text> */}
+      </View>
+    </View>
+  ),
   // any_custom_type: () => {}
 };
 
@@ -124,5 +131,37 @@ const styles = StyleSheet.create({
   icon: {
     width: '20%',
     alignItems: 'center',
-  }
+  },
+  errorToast: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    minHeight: 60,
+    width: 250,
+    backgroundColor: Colors.indigoLight,
+    borderRadius: 10,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 15,
+      height: 15,
+    },
+    shadowRadius: 8,
+    shadowOpacity: .45,
+    elevation: 15,
+  },
+  innerErrorToast: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: Colors.indigoDark,
+    minHeight: 60,
+    width: 240,
+    borderRadius: 10,
+    paddingRight: 5,
+  },
+  errorToastText: {
+    fontFamily: 'lato-bold',
+    color: 'red',
+    width: '80%'
+  },
 })

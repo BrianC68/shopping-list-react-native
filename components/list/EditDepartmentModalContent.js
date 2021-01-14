@@ -26,7 +26,7 @@ const EditDepartmentModalContent = ({ updateDepartment, setLoading, deptID, dept
   return (
     <View>
       <Input
-        label='Department'
+        label='Department Name'
         value={departmentName}
         keyboardType='default'
         autoCorrect={true}

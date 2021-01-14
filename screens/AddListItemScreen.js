@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { View, Text, StyleSheet, Button, Alert, ScrollView } from 'react-native';
@@ -8,17 +8,13 @@ import Input from '../components/UI/Input';
 import ModalComponent from '../components/UI/ModalComponent';
 import AddNewDeptModalContent from '../components/list/AddNewDeptModalContent';
 import Colors from '../constants/Colors';
-import { addItem, setLoading, clearListsError, setNewDepartment } from '../actions/listActions';
+import { addItem, setLoading, setNewDepartment } from '../actions/listActions';
 
-const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoading, error, clearListsError, setNewDepartment, newDept }) => {
+const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoading, error, setNewDepartment, newDept }) => {
   const [itemDesc, setItemDesc] = useState('');
   const [quantity, setQuantity] = useState('');
   const [department, setDepartment] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
-
-  useEffect(() => {
-    clearListsError();
-  }, [clearListsError]);
 
   const onAddItem = () => {
     if (itemDesc === '') {
@@ -28,8 +24,6 @@ const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoa
       Alert.alert('Error', 'Quanitity is required!', [{ text: 'OK' }]);
       return;
     }
-
-    clearListsError();
 
     const newItem = {
       user: userID,
@@ -101,7 +95,7 @@ const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoa
             <Button title='Submit' color={Colors.indigo} onPress={onAddItem} />
           </View>
         </View>
-        {error !== null &&
+        {error === 'The fields user, item, shopping_list must make a unique set.' &&
           <View style={styles.error}>
             <Text style={styles.errorText}>This item is already on your list!  Check your saved items tab.</Text>
           </View>
@@ -147,7 +141,7 @@ const styles = StyleSheet.create({
   },
   error: {
     marginVertical: 30,
-    backgroundColor: Colors.indigoLight,
+    // backgroundColor: Colors.indigoLight,
     padding: 20,
     borderRadius: 2,
     width: '90%'
@@ -162,7 +156,6 @@ const mapStateToProps = state => ({
   currentListID: state.list.currentList.id,
   departments: state.list.currentList.departments,
   userID: state.auth.user.id,
-  // message: state.list.message,
   error: state.list.error,
   newDept: state.list.newDept,
 });
@@ -170,9 +163,7 @@ const mapStateToProps = state => ({
 AddListItemScreen.propTypes = {
   addItem: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
-  // clearListsMessage: PropTypes.func.isRequired,
-  clearListsError: PropTypes.func.isRequired,
   setNewDepartment: PropTypes.func.isRequired,
 }
 
-export default connect(mapStateToProps, { addItem, setLoading, clearListsError, setNewDepartment })(AddListItemScreen);
+export default connect(mapStateToProps, { addItem, setLoading, setNewDepartment })(AddListItemScreen);

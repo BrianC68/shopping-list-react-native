@@ -7,18 +7,31 @@ import {
   SafeAreaView,
   TouchableOpacity
 } from 'react-native';
-import { connect } from 'react-redux';
+import { connect, useSelector, useDispatch } from 'react-redux';
 import { FontAwesome5 } from '@expo/vector-icons';
+import Toast from 'react-native-toast-message';
 
 import Colors from '../constants/Colors';
 import DepartmentItem from '../components/list/DepartmentItem';
 import ModalComponent from '../components/UI/ModalComponent';
 import AddNewDeptModalContent from '../components/list/AddNewDeptModalContent';
+import { clearListsError } from '../actions/listActions';
 
 const DepartmentScreen = ({ currentList }) => {
   const [modalVisible, setModalVisible] = useState(false);
-
+  const error = useSelector(state => state.list.error);
+  const dispatch = useDispatch();
   const departments = currentList.departments;
+
+  if (error === 'The fields user, name, shopping_list must make a unique set.') {
+    Toast.show({
+      type: 'error',
+      text1: 'Duplicate Department Name!',
+      topOffset: 150,
+      visibilityTime: 4000,
+      onHide: () => { dispatch(clearListsError()) },
+    });
+  }
 
   const emptyList = () => {
     return (

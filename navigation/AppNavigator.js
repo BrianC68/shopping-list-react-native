@@ -6,7 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { ShoppingListsNavigator, AuthNavigator, AppDrawerNavigator } from './ShoppingListsNav';
+import { AuthNavigator, AppDrawerNavigator } from './ShoppingListsNav';
 import { Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import { loadUser, setAuthLoading } from '../actions/authActions';
@@ -26,7 +26,7 @@ const AppNavigator = ({ loadUser, setLoading, setAuthLoading }) => {
         loadUser(user_id, username, token);
         // console.log(user_id, username, token);
       } catch (err) {
-        console.log(err);
+        // Do nothing app will redirect to AuthNavigator
       }
     }
     loadUserData();

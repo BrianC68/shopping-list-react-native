@@ -10,20 +10,36 @@ import {
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { FontAwesome5 } from '@expo/vector-icons';
-import { connect } from 'react-redux';
+import { connect, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Toast from 'react-native-toast-message';
 
 import Colors from '../constants/Colors';
 import CurrentListItem from '../components/list/CurrentListItem';
-import { setLoading, deleteList, clearListsMessage, setSortOrder, sortList } from '../actions/listActions';
+import { setLoading, deleteList, clearListsMessage, setSortOrder, sortList, clearListsError } from '../actions/listActions';
 import HeaderButton from '../components/UI/HeaderButton';
 import ModalComponent from '../components/UI/ModalComponent';
 import ShareListModalContent from '../components/list/ShareListModalContent';
 
-const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, user, message, clearListsMessage, setSortOrder, sortList, sortOrder }) => {
+const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, user, message,
+  clearListsMessage, setSortOrder, sortList, sortOrder, clearListsError }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const error = useSelector(state => state.list.error);
+
   const itemsOnCurrentList = currentList.list_items.filter(item => item.on_list);
+
+  // useEffect(() => {
+  if (error === 'User does not exist!') {
+    Toast.show({
+      type: 'error',
+      text1: error,
+      topOffset: 150,
+      visibilityTime: 4000,
+      onHide: () => { clearListsError() },
+    });
+  }
+  // }, [])
+
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -250,6 +266,7 @@ ListDetailScreen.propTypes = {
   clearListsMessage: PropTypes.func.isRequired,
   setSortOrder: PropTypes.func.isRequired,
   sortList: PropTypes.func.isRequired,
+  clearListsError: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = state => ({
@@ -257,6 +274,7 @@ const mapStateToProps = state => ({
   message: state.list.message,
   user: state.auth.user.id,
   sortOrder: state.list.sort_order,
+  // error: state.list.error,
 })
 
 export default connect(mapStateToProps, {
@@ -264,5 +282,6 @@ export default connect(mapStateToProps, {
   deleteList,
   clearListsMessage,
   setSortOrder,
-  sortList
+  sortList,
+  clearListsError,
 })(ListDetailScreen);

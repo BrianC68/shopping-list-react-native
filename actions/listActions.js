@@ -126,9 +126,9 @@ export const shareList = (list, message) => async dispatch => {
       type: SHARE_LIST,
       payload: res.data,
       message: message
-
     });
   } catch (err) {
+    // console.log(err);
     dispatch({
       type: LISTS_ERROR,
       payload: err.response.data.non_field_errors[0]
@@ -157,7 +157,7 @@ export const addItem = (data, msg) => async dispatch => {
   } catch (err) {
     dispatch({
       type: LISTS_ERROR,
-      payload: err.response.data
+      payload: err.response.data.non_field_errors[0]
     });
   }
 }
@@ -241,7 +241,7 @@ export const addDepartment = (data) => async dispatch => {
   } catch (err) {
     dispatch({
       type: LISTS_ERROR,
-      payload: err.response.data
+      payload: err.response.data.non_field_errors[0]
     })
   }
 }
@@ -257,7 +257,7 @@ export const updateDepartment = (data) => async dispatch => {
   } catch (err) {
     dispatch({
       type: LISTS_ERROR,
-      payload: err.response.data
+      payload: err.response.data.non_field_errors[0]
     })
   }
 }

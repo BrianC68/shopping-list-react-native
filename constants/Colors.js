@@ -8,4 +8,5 @@ export default {
   amberLight: '#ffd54f',
   orangeDark: '#ef6c00',
   green: '#0ea135',
+  red: '#c62828',
 }

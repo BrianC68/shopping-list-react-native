@@ -203,7 +203,7 @@ const list = (state = initialState, action) => {
             ...state.currentList.departments
           ]
         },
-        loading: false
+        loading: false,
       }
     case EDIT_DEPARTMENT:
       return {
@@ -246,7 +246,7 @@ const list = (state = initialState, action) => {
         lists: null,
       }
     case LISTS_ERROR:
-      console.error(action.payload);
+      // console.error(action.payload);
       return {
         ...state,
         error: action.payload,

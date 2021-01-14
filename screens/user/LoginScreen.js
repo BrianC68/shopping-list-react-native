@@ -13,20 +13,14 @@ import {
 
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
-import { login, setAuthLoading, clearMessage } from '../../actions/authActions';
+import { login, setAuthLoading } from '../../actions/authActions';
 
-const LoginScreen = ({ login, setAuthLoading, clearMessage }) => {
+const LoginScreen = ({ login, setAuthLoading }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
-  // const loading = useSelector(state => state.auth.loading);
   const message = useSelector(state => state.auth.message);
   const error = useSelector(state => state.auth.error);
-
-  if (message) {
-    Alert.alert('Message', message, [{ text: 'OK' }]);
-    clearMessage();
-  }
 
   const onLogin = () => {
     if (userName === '' || password === '') {
@@ -55,6 +49,11 @@ const LoginScreen = ({ login, setAuthLoading, clearMessage }) => {
         {error &&
           <View>
             <Text style={styles.error}>{error}</Text>
+          </View>
+        }
+        {message !== '' &&
+          <View>
+            <Text style={styles.error}>{message}</Text>
           </View>
         }
         <View style={styles.form}>
@@ -125,7 +124,6 @@ const styles = StyleSheet.create({
 LoginScreen.propTypes = {
   login: PropTypes.func.isRequired,
   setAuthLoading: PropTypes.func.isRequired,
-  clearMessage: PropTypes.func.isRequired,
 }
 
-export default connect(null, { login, setAuthLoading, clearMessage })(LoginScreen);
+export default connect(null, { login, setAuthLoading })(LoginScreen);
