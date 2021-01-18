@@ -13,6 +13,7 @@ import {
   CLEAR_ERROR,
   CLEAR_MESSAGE,
   SET_AUTH_LOADING,
+  SAVE_PUSH_TOKEN,
 } from '../actions/types';
 
 // const apiServer = 'http://localhost:8000';
@@ -29,7 +30,7 @@ const apiServer = 'https://api.bchristensen.net';
 // // const parsedUserData = JSON.parse(userData);
 // const { token, user_id, username } = userData;
 
-export const loadUser = (user_id, username, token) => async dispatch => {
+export const loadUser = (user_id, username, token, profile_id, push_token) => async dispatch => {
   if (username && user_id && token) {
     dispatch({
       type: USER_LOADED,
@@ -37,6 +38,8 @@ export const loadUser = (user_id, username, token) => async dispatch => {
         userID: user_id,
         userName: username,
         token: token,
+        profile_id: profile_id,
+        push_token: push_token,
       }
     });
   } else {
@@ -93,6 +96,24 @@ export const login = (credentials) => async dispatch => {
       type: LOGIN_FAIL,
       payload: err.response.data.non_field_errors[0]
     })
+  }
+}
+
+export const savePushToken = (profileData) => async dispatch => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  }
+  try {
+    const res = await axios.put(`${apiServer}/api/users/profile/${profileData.id}/`, JSON.stringify(profileData), config);
+
+    dispatch({
+      type: SAVE_PUSH_TOKEN,
+      payload: res.data
+    });
+  } catch (err) {
+    console.log(err);
   }
 }
 

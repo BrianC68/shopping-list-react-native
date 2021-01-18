@@ -172,6 +172,9 @@ export const addSavedItem = data => async dispatch => {
       type: ADD_SAVED_ITEM,
       payload: res.data
     });
+
+    
+
   } catch (err) {
     // console.error(err.response.data);
     dispatch({

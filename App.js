@@ -7,6 +7,7 @@ import AppNavigator from './navigation/AppNavigator';
 import Toast from 'react-native-toast-message';
 import { FontAwesome5 } from '@expo/vector-icons';
 import * as SplashScreen from 'expo-splash-screen';
+import * as Notifications from 'expo-notifications';
 
 import store from './store';
 import CurrentListState from './context/currentListState';
@@ -43,8 +44,34 @@ const toastConfig = {
   // any_custom_type: () => {}
 };
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldShowAlert: true,
+      shouldPlaySound: true,
+    }
+  }
+});
+
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
+
+  // ########################## TODO: Add listener for push Token changes, then dispatch savePushToken ##############################################
+
+  useEffect(() => {
+    // const bgSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+    //   console.log(response);
+    // });
+
+    const fgSubscription = Notifications.addNotificationReceivedListener(notification => {
+      console.log(notification);
+    });
+
+    return () => {
+      // bgSubscription.remove();
+      fgSubscription.remove();
+    }
+  }, [])
 
   useEffect(() => {
     const loadFonts = async () => {

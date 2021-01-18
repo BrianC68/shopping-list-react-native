@@ -31,7 +31,6 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
 
   const itemsOnCurrentList = currentList.list_items.filter(item => item.on_list);
 
-  // useEffect(() => {
   if (error === 'User does not exist!') {
     Toast.show({
       type: 'error',
@@ -41,7 +40,6 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
       onHide: () => { clearListsError() },
     });
   }
-  // }, [])
 
 
   useEffect(() => {
@@ -264,7 +262,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   empty: {
-    marginTop: Platform.OS === 'android' ? 100 : 40,
+    marginTop: Platform.OS === 'android' ? 130 : 40,
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

@@ -10,7 +10,7 @@ import { AuthNavigator, AppDrawerNavigator } from './ShoppingListsNav';
 import { Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import { loadUser, setAuthLoading } from '../actions/authActions';
-import { setLoading } from '../actions/listActions';
+// import { setLoading } from '../actions/listActions';
 import setAuthTokenHeader from '../utils/setAuthTokenHeader';
 
 const AppNavigator = ({ loadUser, setAuthLoading }) => {
@@ -19,11 +19,13 @@ const AppNavigator = ({ loadUser, setAuthLoading }) => {
       try {
         const jsonValue = await AsyncStorage.getItem('userData');
         const userData = jsonValue != null ? JSON.parse(jsonValue) : null;
-        const { token, user_id, username } = userData;
+        const { token, user_id, username, profile_id, push_token } = userData;
         setAuthTokenHeader(token);
         setAuthLoading();
-        loadUser(user_id, username, token);
-        // console.log(user_id, username, token);
+        // console.log(`AppNavigator pushToken from storage: ${push_token}`)
+        await loadUser(user_id, username, token, profile_id, push_token);
+        // Check to see if the push token in redux state is null
+
       } catch (err) {
         // Do nothing app will redirect to AuthNavigator
       }
@@ -34,7 +36,6 @@ const AppNavigator = ({ loadUser, setAuthLoading }) => {
   const isAuth = useSelector(state => state.auth.isAuthenticated);
   const authLoading = useSelector(state => state.auth.loading);
   const listLoading = useSelector(state => state.list.loading);
-  // const message = useSelector(state => state.list.message);
 
   return (
     <NavigationContainer>

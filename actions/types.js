@@ -9,7 +9,7 @@ export const REGISTER_FAIL = 'REGISTER_FAIL';
 export const CLEAR_MESSAGE = 'CLEAR_MESSAGE';
 export const CLEAR_ERROR = 'CLEAR_ERROR';
 export const SET_AUTH_LOADING = 'SET_AUTH_LOADING';
-
+export const SAVE_PUSH_TOKEN = 'SAVE_PUSH_TOKEN';
 
 // Shopping List action types
 export const GET_LISTS = 'GET_LISTS';

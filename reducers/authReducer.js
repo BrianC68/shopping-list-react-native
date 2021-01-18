@@ -9,7 +9,8 @@ import {
   REGISTER_FAIL,
   CLEAR_ERROR,
   CLEAR_MESSAGE,
-  SET_AUTH_LOADING
+  SET_AUTH_LOADING,
+  SAVE_PUSH_TOKEN,
 } from '../actions/types';
 
 // const loadUserData = async () => {
@@ -40,16 +41,21 @@ const auth = (state = initialState, action) => {
         user: {
           username: action.payload.userName,
           id: action.payload.userID,
+          profile_id: action.payload.profile_id,
+          push_token: action.payload.push_token,
         },
         isAuthenticated: true,
         error: '',
         loading: false
       }
     case LOGIN_SUCCESS:
-      saveDataToStorage(action.payload.token, action.payload.user.id, action.payload.user.username);
-      // localStorage.setItem('token', action.payload.token);
-      // localStorage.setItem('username', action.payload.user.username);
-      // localStorage.setItem('user_id', action.payload.user.id);
+      saveDataToStorage(
+        action.payload.token,
+        action.payload.user.id,
+        action.payload.user.username,
+        action.payload.user.profile_id,
+        action.payload.user.push_token,
+      );
       return {
         ...state,
         ...action.payload,
@@ -105,6 +111,14 @@ const auth = (state = initialState, action) => {
         message: '',
         // loading: false
       }
+    case SAVE_PUSH_TOKEN:
+      return {
+        ...state,
+        user: {
+          ...state.user,
+          push_token: action.payload.push_token,
+        }
+      }
     case CLEAR_ERROR:
       return {
         ...state,
@@ -125,13 +139,15 @@ const auth = (state = initialState, action) => {
   }
 }
 
-const saveDataToStorage = async (token, user_id, username) => {
+const saveDataToStorage = async (token, user_id, username, profile_id, push_token) => {
   try {
     await AsyncStorage.setItem('userData', JSON.stringify(
       {
         token: token,
         user_id: user_id,
-        username: username
+        username: username,
+        profile_id: profile_id,
+        push_token: push_token,
       }
     )
     );

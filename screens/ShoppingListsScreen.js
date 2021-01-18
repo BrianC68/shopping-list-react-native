@@ -7,21 +7,50 @@ import {
   FlatList,
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
 
 import Colors from '../constants/Colors';
 import HeaderButton from '../components/UI/HeaderButton';
 import { getLists, setLoading, getList, clearCurrent } from '../actions/listActions';
+import { savePushToken } from '../actions/authActions';
 import ShoppingListsItem from '../components/list/ShoppingListsItem';
 import ModalComponent from '../components/UI/ModalComponent';
 import AddNewListModalContent from '../components/list/AddNewListModalContent';
 import CurrentListContext from '../context/currentListContext';
 
-const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading, getList, clearCurrent, user }) => {
+const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading, getList, clearCurrent, username, userData, savePushToken }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const currentListContext = useContext(CurrentListContext);
   const [isRefreshing, setIsRefreshing] = useState(false);
-
   const { setCurrentListTitle } = currentListContext;
+
+  useEffect(() => {
+    let pushToken;
+    const getPermissionForNotifications = async () => {
+      let permissionObject = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      if (permissionObject !== 'granted') {
+        permissionObject = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      }
+      if (permissionObject.status !== 'granted') {
+        pushToken = null;
+      } else {
+        pushToken = (await Notifications.getExpoPushTokenAsync()).data;
+      }
+      // console.log(`ShoppingListsScreen pushToken: ${userData.push_token}`);
+      if (userData.push_token === null) {
+        const profileData = {
+          user: userData.id,
+          push_token: pushToken,
+          id: userData.profile_id,
+        }
+        // console.log("Run savePushToken()");
+        // console.log(profileData);
+        savePushToken(profileData);
+      }
+    }
+    getPermissionForNotifications();
+  }, [Permissions, Notifications, savePushToken])
 
   useEffect(() => {
     getLists();
@@ -104,7 +133,7 @@ const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading
             id={itemData.item.id}
             name={itemData.item.name}
             listOwner={itemData.item.list_owner}
-            user={user}
+            user={username}
             onSelect={() => {
               onSelectList(itemData.item.id, itemData.item.name);
             }}
@@ -145,12 +174,15 @@ ShoppingListsScreen.propTypes = {
   getList: PropTypes.func.isRequired,
   clearCurrent: PropTypes.func.isRequired,
   setLoading: PropTypes.func.isRequired,
+  savePushToken: PropTypes.func.isRequired,
   list: PropTypes.object.isRequired,
+  userData: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = state => ({
   list: state.list,
-  user: state.auth.user.username,
+  username: state.auth.user.username,
+  userData: state.auth.user,
 })
 
-export default connect(mapStateToProps, { getLists, setLoading, getList, clearCurrent })(ShoppingListsScreen);
+export default connect(mapStateToProps, { getLists, setLoading, getList, clearCurrent, savePushToken })(ShoppingListsScreen);

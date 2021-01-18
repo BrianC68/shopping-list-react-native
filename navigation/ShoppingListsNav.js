@@ -148,6 +148,7 @@ export const AppDrawerNavigator = () => {
             <DrawerItemList {...props} />
             <TouchableOpacity onPress={() => {
               dispatch(logout());
+              props.navigation.closeDrawer();
             }}>
               <View style={{ flexDirection: 'row', paddingLeft: 18 }}>
                 <FontAwesome5 name="sign-out-alt" size={24} color={Colors.amberDark} />
