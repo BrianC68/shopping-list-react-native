@@ -5,6 +5,8 @@ import {
   View,
   StyleSheet,
   FlatList,
+  ActivityIndicator,
+  Platform,
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import * as Notifications from 'expo-notifications';
@@ -19,7 +21,7 @@ import ModalComponent from '../components/UI/ModalComponent';
 import AddNewListModalContent from '../components/list/AddNewListModalContent';
 import CurrentListContext from '../context/currentListContext';
 
-const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading, getList, clearCurrent, username, userData, savePushToken }) => {
+const ShoppingListsScreen = ({ navigation, list: { lists, currentList, loading }, getLists, setLoading, getList, clearCurrent, username, userData, savePushToken }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const currentListContext = useContext(CurrentListContext);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -38,19 +40,17 @@ const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading
         pushToken = (await Notifications.getExpoPushTokenAsync()).data;
       }
       // console.log(`ShoppingListsScreen pushToken: ${userData.push_token}`);
-      if (userData.push_token === null) {
-        const profileData = {
-          user: userData.id,
-          push_token: pushToken,
-          id: userData.profile_id,
-        }
-        // console.log("Run savePushToken()");
-        // console.log(profileData);
-        savePushToken(profileData);
+      const profileData = {
+        user: userData.id,
+        push_token: pushToken,
+        id: userData.profile_id,
       }
+      // console.log("savePushToken() ran!");
+      // console.log(profileData);
+      savePushToken(profileData);
     }
     getPermissionForNotifications();
-  }, [Permissions, Notifications, savePushToken])
+  }, [savePushToken]);
 
   useEffect(() => {
     getLists();
@@ -97,6 +97,10 @@ const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading
     setCurrentListTitle(name);
     setLoading(true);
     await getList(id);
+    // console.log(currentList)
+    if (currentList === null) {
+      setLoading(false);
+    }
     navigation.navigate('ListDetail', {
       params: {
         listID: id
@@ -123,6 +127,11 @@ const ShoppingListsScreen = ({ navigation, list: { lists }, getLists, setLoading
 
   return (
     <View style={styles.backGround}>
+      {loading && Platform.OS === 'ios' &&
+        <View style={{ paddingTop: 20 }}>
+          <ActivityIndicator color={Colors.amber} />
+        </View>
+      }
       <FlatList
         onRefresh={reLoadLists}
         refreshing={isRefreshing}

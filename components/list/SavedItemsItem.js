@@ -65,10 +65,10 @@ const SavedItemsItem = ({ itemID, user, deptID, deptName, item, quantity, listID
       </View>
       <View style={styles.actions}>
         <TouchableOpacity onPress={onAddSavedItem}>
-          <FontAwesome5 name='plus-square' size={20} color={Colors.indigo} />
+          <FontAwesome5 name='plus-square' size={23} color={Colors.indigo} />
         </TouchableOpacity>
         <TouchableOpacity onPress={onDeleteSavedItem}>
-          <FontAwesome5 name='trash-alt' size={20} color='red' />
+          <FontAwesome5 name='trash-alt' size={23} color='red' />
         </TouchableOpacity>
       </View>
     </View>

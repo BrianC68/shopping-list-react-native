@@ -53,7 +53,7 @@ const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) =>
           <View style={styles.headerItem}>
             <Text style={styles.headerText}>Item</Text>
             <TouchableOpacity style={styles.icon} onPress={() => onSortList('item')}>
-              <FontAwesome5 name='sort' size={20} color={Colors.indigoDark} />
+              <FontAwesome5 name='sort' size={23} color={Colors.amberDark} />
             </TouchableOpacity>
           </View>
           <View style={styles.headerQty}>
@@ -62,7 +62,7 @@ const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) =>
           <View style={styles.headerDept}>
             <Text style={styles.headerText}>Dept</Text>
             <TouchableOpacity style={styles.icon} onPress={() => onSortList('dept')}>
-              <FontAwesome5 name='object-group' size={20} color={Colors.indigoDark} />
+              <FontAwesome5 name='object-group' size={23} color={Colors.amberDark} />
             </TouchableOpacity>
           </View>
           <View style={styles.headerActions}>

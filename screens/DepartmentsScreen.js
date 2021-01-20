@@ -64,7 +64,7 @@ const DepartmentScreen = ({ currentList }) => {
               Department
             </Text>
             <TouchableOpacity style={styles.icon} onPress={toggleModal}>
-              <FontAwesome5 name='plus' size={18} color={Colors.indigoDark} />
+              <FontAwesome5 name='plus' size={23} color={Colors.amberDark} />
             </TouchableOpacity>
           </View>
           <View style={styles.headerActions}>

@@ -22,9 +22,9 @@ const SavedItemsItem = ({ added_by, deptID, deptName, shoppingListID, userID, de
   const showAddedByToast = () => {
     Toast.show({
       type: 'info',
-      text1: `${deptName} added by ${added_by}`,
+      text1: `${deptName} was added by ${added_by}`,
       topOffset: 150, // default is 30
-      visibilityTime: 2000,
+      visibilityTime: 1200,
     });
   };
 
@@ -77,13 +77,13 @@ const SavedItemsItem = ({ added_by, deptID, deptName, shoppingListID, userID, de
       </View>
       <View style={styles.actions}>
         <TouchableOpacity onPress={showAddedByToast}>
-          <FontAwesome5 name='user' size={20} color={Colors.indigo} />
+          <FontAwesome5 name='user' size={23} color={Colors.indigo} />
         </TouchableOpacity>
         <TouchableOpacity onPress={toggleModal}>
-          <FontAwesome5 name='edit' size={20} color={Colors.amberDark} />
+          <FontAwesome5 name='edit' size={23} color={Colors.amberDark} />
         </TouchableOpacity>
         <TouchableOpacity onPress={onDeleteDept}>
-          <FontAwesome5 name='trash-alt' size={20} color='red' />
+          <FontAwesome5 name='trash-alt' size={23} color='red' />
         </TouchableOpacity>
       </View>
       {updateDeptModal}

@@ -56,23 +56,6 @@ Notifications.setNotificationHandler({
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
-  // ########################## TODO: Add listener for push Token changes, then dispatch savePushToken ##############################################
-
-  useEffect(() => {
-    // const bgSubscription = Notifications.addNotificationResponseReceivedListener(response => {
-    //   console.log(response);
-    // });
-
-    const fgSubscription = Notifications.addNotificationReceivedListener(notification => {
-      console.log(notification);
-    });
-
-    return () => {
-      // bgSubscription.remove();
-      fgSubscription.remove();
-    }
-  }, [])
-
   useEffect(() => {
     const loadFonts = async () => {
       try {
@@ -86,6 +69,21 @@ export default function App() {
     }
     loadFonts();
   }, [fetchFonts, hideSplashScreen]);
+
+  useEffect(() => { //
+    // const bgSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+    //   console.log(response);
+    // });
+
+    const fgSubscription = Notifications.addNotificationReceivedListener(notification => {
+      console.log(notification);
+    });
+
+    return () => {
+      // bgSubscription.remove();
+      fgSubscription.remove();
+    }
+  }, []);
 
   const hideSplashScreen = async () => {
     setTimeout(async () => {

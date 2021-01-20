@@ -21,9 +21,9 @@ const CurrentListItem = ({ itemID, user, added_by, deptID, deptName, item, quant
   const showAddedByToast = () => {
     Toast.show({
       type: 'info',
-      text1: `${item} added by ${added_by}`,
+      text1: `${item} was added by ${added_by}`,
       topOffset: 150, // default is 30
-      visibilityTime: 2000,
+      visibilityTime: 1200,
     });
   };
 
@@ -74,13 +74,13 @@ const CurrentListItem = ({ itemID, user, added_by, deptID, deptName, item, quant
       </View>
       <View style={styles.actions}>
         <TouchableOpacity onPress={showAddedByToast}>
-          <FontAwesome5 name='user' size={20} color={Colors.indigo} />
+          <FontAwesome5 name='user' size={23} color={Colors.indigo} />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => { toggleModal(); }}>
-          <FontAwesome5 name='edit' size={20} color={Colors.amberDark} />
+          <FontAwesome5 name='edit' size={23} color={Colors.amberDark} />
         </TouchableOpacity>
         <TouchableOpacity onPress={onRemoveItemFromList}>
-          <FontAwesome5 name='check-square' size={20} color={Colors.green} />
+          <FontAwesome5 name='check-square' size={23} color={Colors.green} />
         </TouchableOpacity>
       </View>
       {updateItemModal}

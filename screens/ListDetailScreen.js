@@ -7,7 +7,8 @@ import {
   SafeAreaView,
   TouchableOpacity,
   Alert,
-  Platform
+  Platform,
+  ActivityIndicator
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import { FontAwesome5 } from '@expo/vector-icons';
@@ -29,6 +30,11 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
   const [isRefreshing, setIsRefreshing] = useState(false);
   const error = useSelector(state => state.list.error);
 
+  if (currentList === undefined) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}><Text>Ooops something went wrong.</Text></View>
+    )
+  }
   const itemsOnCurrentList = currentList.list_items.filter(item => item.on_list);
 
   if (error === 'User does not exist!') {
@@ -40,7 +46,6 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
       onHide: () => { clearListsError() },
     });
   }
-
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('beforeRemove', () => {
@@ -61,11 +66,10 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
         type: 'info',
         text1: message,
         topOffset: 150,
-        visibilityTime: 2000,
+        visibilityTime: 1200,
       });
     };
   }, [message])
-
 
   useEffect(() => {
     if (user === currentList.user) {
@@ -148,7 +152,7 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
           closeModal={toggleModal}
         />
       }
-      title='Share List'
+      title={`Share ${currentList.name}`}
       onClose={toggleModal}
     />
   );
@@ -175,7 +179,7 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
           <View style={styles.headerItem}>
             <Text style={styles.headerText}>Item</Text>
             <TouchableOpacity style={styles.icon} onPress={() => onSortList('item')}>
-              <FontAwesome5 name='sort' size={20} color={Colors.indigoDark} />
+              <FontAwesome5 name='sort' size={23} color={Colors.amberDark} />
             </TouchableOpacity>
           </View>
           <View style={styles.headerQty}>
@@ -184,7 +188,7 @@ const ListDetailScreen = ({ currentList, setLoading, deleteList, navigation, use
           <View style={styles.headerDept}>
             <Text style={styles.headerText}>Dept</Text>
             <TouchableOpacity style={styles.icon} onPress={() => onSortList('dept')}>
-              <FontAwesome5 name='object-group' size={20} color={Colors.indigoDark} />
+              <FontAwesome5 name='object-group' size={23} color={Colors.amberDark} />
             </TouchableOpacity>
           </View>
           <View style={styles.headerActions}>
