@@ -56,6 +56,7 @@ const CurrentListItem = ({ itemID, user, added_by, deptID, deptName, item, quant
       shopping_list: listID,
       item: item,
       on_list: false,
+      notifications: false,
     }
     setLoading(true);
     removeItemFromList(data, itemID);

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, Platform } from 'react-native';
 import { Provider } from 'react-redux';
-// import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 import AppNavigator from './navigation/AppNavigator';
 import Toast from 'react-native-toast-message';
@@ -53,6 +52,53 @@ Notifications.setNotificationHandler({
   }
 });
 
+const setListShareChannel = async () => await Notifications.setNotificationChannelAsync('sh@ppingListShare', {
+  name: 'listShare',
+  importance: 'DEFAULT',
+  // Optional attributes
+  bypassDnd: false,
+  description: 'Notify the user when a list is shared with the user',
+  // groupId: string | null,
+  // lightColor: string,
+  lockscreenVisibility: 'PUBLIC',
+  // showBadge: boolean,
+  sound: 'true',
+  // audioAttributes: Partial<AudioAttributes>,
+  vibrationPattern: [1, 1],
+  // enableLights: boolean,
+  enableVibrate: true,
+});
+if (Platform.OS === 'android') {
+  setListShareChannel();
+}
+
+const setShoppingListChannel = async () => await Notifications.setNotificationChannelAsync('sh@ppingList', {
+  name: 'sh@ppingList',
+  importance: 'DEFAULT',
+  // Optional attributes
+  bypassDnd: false,
+  description: 'Notify the user when an item is added or updated on the list',
+  // groupId: string | null,
+  // lightColor: string,
+  lockscreenVisibility: 'PUBLIC',
+  // showBadge: boolean,
+  sound: 'true',
+  // audioAttributes: Partial<AudioAttributes>,
+  vibrationPattern: [1, 1],
+  // enableLights: boolean,
+  enableVibrate: true,
+});
+
+if (Platform.OS === 'android') {
+  setShoppingListChannel();
+}
+
+const getChannels = async () => {
+  const channels = await Notifications.getNotificationChannelsAsync();
+}
+
+getChannels();
+
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);
 
@@ -70,20 +116,23 @@ export default function App() {
     loadFonts();
   }, [fetchFonts, hideSplashScreen]);
 
-  useEffect(() => { //
-    // const bgSubscription = Notifications.addNotificationResponseReceivedListener(response => {
-    //   console.log(response);
-    // });
+  // useEffect(() => { //
+  //   const bgSubscription = Notifications.addNotificationResponseReceivedListener(response => {
+  //     console.log(response);
+  //     console.log('bgSubscription()')
+  //     // Notifications.dismissAllNotificationsAsync();
+  //   });
 
-    const fgSubscription = Notifications.addNotificationReceivedListener(notification => {
-      console.log(notification);
-    });
+  //   const fgSubscription = Notifications.addNotificationReceivedListener(notification => {
+  //     console.log(notification.request.identifier);
+  //     console.log('fgSubscription()')
+  //   });
 
-    return () => {
-      // bgSubscription.remove();
-      fgSubscription.remove();
-    }
-  }, []);
+  //   return () => {
+  //     bgSubscription.remove();
+  //     fgSubscription.remove();
+  //   }
+  // }, []);
 
   const hideSplashScreen = async () => {
     setTimeout(async () => {

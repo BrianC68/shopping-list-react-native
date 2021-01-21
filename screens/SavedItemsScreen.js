@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   FlatList,
   StyleSheet,
   Text,
   View,
   SafeAreaView,
-  TouchableOpacity
+  TouchableOpacity,
+  Switch
 } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { connect } from 'react-redux';
@@ -16,6 +17,9 @@ import SavedItemsItem from '../components/list/SavedItemsItem';
 import { sortList, setSortOrder } from '../actions/listActions';
 
 const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) => {
+  const [sendNotifications, setSendNotifications] = useState(false);
+
+  const toggleNotifications = () => setSendNotifications(previousState => !previousState);
 
   const savedItems = currentList.list_items.filter(item => !item.on_list);
 
@@ -49,6 +53,22 @@ const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) =>
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.screen}>
+        {currentList.shares.length > 0 &&
+          <View style={styles.headerRow}>
+            <Text style={styles.notificationsText}>
+              Send Notifications
+          </Text>
+            <View>
+              <Switch
+                trackColor={{ false: Colors.indigoLight, true: Colors.indigo }}
+                thumbColor={sendNotifications ? Colors.amberDark : Colors.amberLight}
+                ios_backgroundColor={Colors.indigoLight}
+                onValueChange={toggleNotifications}
+                value={sendNotifications}
+              />
+            </View>
+          </View>
+        }
         <View style={styles.headerRow}>
           <View style={styles.headerItem}>
             <Text style={styles.headerText}>Item</Text>
@@ -82,6 +102,7 @@ const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) =>
               item={itemData.item.item}
               quantity={itemData.item.quantity}
               listID={currentList.id}
+              notifications={sendNotifications}
             />
           )}
         />
@@ -97,6 +118,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 5,
     marginHorizontal: 5
+  },
+  notifications: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '95%',
+    paddingVertical: 10,
+  },
+  notificationsText: {
+    fontFamily: 'lato-bold',
+    color: Colors.indigoDark,
   },
   headerRow: {
     flexDirection: 'row',

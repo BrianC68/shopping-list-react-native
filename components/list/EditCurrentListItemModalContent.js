@@ -37,6 +37,7 @@ const EditCurrentListItemModalContent = (
       user: user,
       shopping_list: listID,
       on_list: true,
+      notifications: false,
       // Can only update next three values
       item: itemName,
       quantity: itemQty,

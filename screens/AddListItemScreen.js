@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Button, Alert, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Button, Alert, ScrollView, Switch } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 import Input from '../components/UI/Input';
@@ -10,11 +10,14 @@ import AddNewDeptModalContent from '../components/list/AddNewDeptModalContent';
 import Colors from '../constants/Colors';
 import { addItem, setLoading, setNewDepartment } from '../actions/listActions';
 
-const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoading, error, setNewDepartment, newDept }) => {
+const AddListItemScreen = ({ currentListID, shares, departments, userID, addItem, setLoading, error, setNewDepartment, newDept }) => {
   const [itemDesc, setItemDesc] = useState('');
   const [quantity, setQuantity] = useState('');
   const [department, setDepartment] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [sendNotifications, setSendNotifications] = useState(false);
+
+  const toggleNotifications = () => setSendNotifications(previousState => !previousState);
 
   const onAddItem = () => {
     if (itemDesc === '') {
@@ -31,6 +34,7 @@ const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoa
       item: itemDesc,
       quantity: quantity,
       department: department ? department : null,
+      notifications: sendNotifications,
     }
     const msg = `${itemDesc} has been added to your list`;
     setLoading(true);
@@ -64,6 +68,22 @@ const AddListItemScreen = ({ currentListID, departments, userID, addItem, setLoa
       <View style={styles.screen}>
         <Text style={styles.header}>Add List Item</Text>
         <View style={styles.form}>
+          {shares.length > 0 &&
+            <View style={styles.notifications}>
+              <Text style={styles.notificationsText}>
+                Send Notifications
+          </Text>
+              <View>
+                <Switch
+                  trackColor={{ false: Colors.indigoLight, true: Colors.indigo }}
+                  thumbColor={sendNotifications ? Colors.amberDark : Colors.amberLight}
+                  ios_backgroundColor={Colors.indigoLight}
+                  onValueChange={toggleNotifications}
+                  value={sendNotifications}
+                />
+              </View>
+            </View>
+          }
           <Input
             label='Item Description'
             value={itemDesc}
@@ -122,6 +142,14 @@ const styles = StyleSheet.create({
   form: {
     width: '90%'
   },
+  notifications: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  notificationsText: {
+    fontFamily: 'lato-bold',
+    color: Colors.indigoDark,
+  },
   picker: {
     marginTop: 10,
   },
@@ -158,6 +186,7 @@ const mapStateToProps = state => ({
   userID: state.auth.user.id,
   error: state.list.error,
   newDept: state.list.newDept,
+  shares: state.list.currentList.shares,
 });
 
 AddListItemScreen.propTypes = {

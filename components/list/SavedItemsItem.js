@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import Colors from '../../constants/Colors';
 import { addSavedItem, deleteItem, setLoading } from '../../actions/listActions';
 
-const SavedItemsItem = ({ itemID, user, deptID, deptName, item, quantity, listID, addSavedItem, deleteItem, setLoading }) => {
+const SavedItemsItem = ({ itemID, user, deptID, deptName, item, quantity, listID, addSavedItem, deleteItem, setLoading, notifications }) => {
   const onAddSavedItem = () => {
     const data = {
       id: itemID,
@@ -23,6 +23,7 @@ const SavedItemsItem = ({ itemID, user, deptID, deptName, item, quantity, listID
       quantity: quantity,
       shopping_list: listID,
       on_list: true,
+      notifications: notifications,
     }
     setLoading(true);
     addSavedItem(data);
