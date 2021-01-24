@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "shopping-list",
+    "name": "Shopping List",
     "slug": "shopping-list",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -23,7 +23,7 @@
       "useNextNotificationsApi": true,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#3f51b5"
       }
     },
     "web": {

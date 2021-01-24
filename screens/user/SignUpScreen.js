@@ -8,21 +8,24 @@ import {
   KeyboardAvoidingView,
   Text,
   Platform,
-  Alert
+  Alert,
+  ActivityIndicator
 } from 'react-native';
 
 import Input from '../../components/UI/Input';
-import { register, setAuthLoading } from '../../actions/authActions';
+import { register, setAuthLoading, clearError } from '../../actions/authActions';
 import Colors from '../../constants/Colors';
 
-const SignUpScreen = ({ register, setAuthLoading }) => {
+const SignUpScreen = ({ register, setAuthLoading, clearError }) => {
   const [regUsername, setUserName] = useState('');
   const [regPassword, setPassword] = useState('');
 
   const error = useSelector(state => state.auth.error);
   const message = useSelector(state => state.auth.message);
+  const loading = useSelector(state => state.auth.loading);
 
   const onRegister = () => {
+    clearError();
     if (regUsername === '' || regPassword === '') {
       Alert.alert('Error', 'Please enter a username and password!', [{ text: 'OK' }]);
     } else {
@@ -53,6 +56,11 @@ const SignUpScreen = ({ register, setAuthLoading }) => {
         {message !== '' &&
           <View>
             <Text style={styles.error}>{message}</Text>
+          </View>
+        }
+        {loading && Platform.OS === 'ios' &&
+          <View>
+            <ActivityIndicator size='small' color={Colors.indigo} />
           </View>
         }
         <View style={styles.form}>
@@ -123,6 +131,7 @@ const styles = StyleSheet.create({
 SignUpScreen.propTypes = {
   register: PropTypes.func.isRequired,
   setAuthLoading: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
 }
 
-export default connect(null, { register, setAuthLoading })(SignUpScreen);
+export default connect(null, { register, setAuthLoading, clearError })(SignUpScreen);

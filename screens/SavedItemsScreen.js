@@ -14,12 +14,19 @@ import PropTypes from 'prop-types';
 
 import Colors from '../constants/Colors';
 import SavedItemsItem from '../components/list/SavedItemsItem';
+import ModalComponent from '../components/UI/ModalComponent';
+import PushNotificationsHelpModalContent from '../components/list/PushNotificationsHelpModalContent';
 import { sortList, setSortOrder } from '../actions/listActions';
 
 const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) => {
   const [sendNotifications, setSendNotifications] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const toggleNotifications = () => setSendNotifications(previousState => !previousState);
+
+  const toggleModal = () => {
+    setModalVisible(previousState => !previousState);
+  };
 
   const savedItems = currentList.list_items.filter(item => !item.on_list);
 
@@ -55,9 +62,16 @@ const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) =>
       <View style={styles.screen}>
         {currentList.shares.length > 0 &&
           <View style={styles.headerRow}>
-            <Text style={styles.notificationsText}>
-              Send Notifications
-          </Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View>
+                <Text style={styles.notificationsText}>
+                  Send Notifications
+              </Text>
+              </View>
+              <TouchableOpacity style={{ paddingLeft: 10 }} onPress={toggleModal}>
+                <FontAwesome5 name='question-circle' size={23} color={Colors.amberDark} />
+              </TouchableOpacity>
+            </View>
             <View>
               <Switch
                 trackColor={{ false: Colors.indigoLight, true: Colors.indigo }}
@@ -67,6 +81,12 @@ const SavedItemsScreen = ({ currentList, sortList, setSortOrder, sortOrder }) =>
                 value={sendNotifications}
               />
             </View>
+            <ModalComponent
+              visible={modalVisible}
+              modalContent={<PushNotificationsHelpModalContent />}
+              title='Push Notifications'
+              onClose={toggleModal}
+            />
           </View>
         }
         <View style={styles.headerRow}>

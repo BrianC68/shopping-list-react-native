@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Button, StyleSheet, Alert } from 'react-native';
+import { View, Button, Alert, StyleSheet, Platform } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Picker } from '@react-native-picker/picker';
@@ -79,7 +79,7 @@ const EditCurrentListItemModalContent = (
         <Picker.Item label='Select Department (Optional)' value={0} />
         {departments.map(dept => <Picker.Item label={dept.name} value={dept.id} key={dept.id} />)}
       </Picker>
-      <View style={{ marginTop: 20 }}>
+      <View style={{ marginTop: Platform.OS === 'android' ? 20 : 0 }}>
         <Button title='Submit' color={Colors.indigo} onPress={onUpdateItem} />
       </View>
     </View>
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   picker: {
     marginTop: 10,
   }
-})
+});
 
 EditCurrentListItemModalContent.propTypes = {
   updateItem: PropTypes.func.isRequired,

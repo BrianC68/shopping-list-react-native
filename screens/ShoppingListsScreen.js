@@ -129,7 +129,7 @@ const ShoppingListsScreen = ({ navigation, list: { lists, currentList, loading }
     <View style={styles.backGround}>
       {loading && Platform.OS === 'ios' &&
         <View style={{ paddingTop: 20 }}>
-          <ActivityIndicator color={Colors.amber} />
+          <ActivityIndicator color={Colors.amber} size='small' />
         </View>
       }
       <FlatList

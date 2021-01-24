@@ -7,7 +7,6 @@ import Spinner from 'react-native-loading-spinner-overlay';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { AuthNavigator, AppDrawerNavigator } from './ShoppingListsNav';
-import { Platform } from 'react-native';
 import Colors from '../constants/Colors';
 import { loadUser, setAuthLoading } from '../actions/authActions';
 // import { setLoading } from '../actions/listActions';

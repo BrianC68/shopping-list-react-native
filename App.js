@@ -52,52 +52,51 @@ Notifications.setNotificationHandler({
   }
 });
 
-const setListShareChannel = async () => await Notifications.setNotificationChannelAsync('sh@ppingListShare', {
-  name: 'listShare',
-  importance: 'DEFAULT',
-  // Optional attributes
-  bypassDnd: false,
-  description: 'Notify the user when a list is shared with the user',
-  // groupId: string | null,
-  // lightColor: string,
-  lockscreenVisibility: 'PUBLIC',
-  // showBadge: boolean,
-  sound: 'true',
-  // audioAttributes: Partial<AudioAttributes>,
-  vibrationPattern: [1, 1],
-  // enableLights: boolean,
-  enableVibrate: true,
-});
 if (Platform.OS === 'android') {
+  const setListShareChannel = async () => await Notifications.setNotificationChannelAsync('sh@ppingListShare', {
+    name: 'listShare',
+    importance: 'DEFAULT',
+    // Optional attributes
+    bypassDnd: false,
+    description: 'Notify the user when a list is shared with the user',
+    // groupId: string | null,
+    // lightColor: string,
+    lockscreenVisibility: 'PUBLIC',
+    // showBadge: boolean,
+    sound: 'true',
+    // audioAttributes: Partial<AudioAttributes>,
+    vibrationPattern: [1, 1],
+    // enableLights: boolean,
+    enableVibrate: true,
+  });
   setListShareChannel();
 }
 
-const setShoppingListChannel = async () => await Notifications.setNotificationChannelAsync('sh@ppingList', {
-  name: 'sh@ppingList',
-  importance: 'DEFAULT',
-  // Optional attributes
-  bypassDnd: false,
-  description: 'Notify the user when an item is added or updated on the list',
-  // groupId: string | null,
-  // lightColor: string,
-  lockscreenVisibility: 'PUBLIC',
-  // showBadge: boolean,
-  sound: 'true',
-  // audioAttributes: Partial<AudioAttributes>,
-  vibrationPattern: [1, 1],
-  // enableLights: boolean,
-  enableVibrate: true,
-});
-
 if (Platform.OS === 'android') {
+  const setShoppingListChannel = async () => await Notifications.setNotificationChannelAsync('sh@ppingList', {
+    name: 'sh@ppingList',
+    importance: 'DEFAULT',
+    // Optional attributes
+    bypassDnd: false,
+    description: 'Notify the user when an item is added or updated on the list',
+    // groupId: string | null,
+    // lightColor: string,
+    lockscreenVisibility: 'PUBLIC',
+    // showBadge: boolean,
+    sound: 'true',
+    // audioAttributes: Partial<AudioAttributes>,
+    vibrationPattern: [1, 1],
+    // enableLights: boolean,
+    enableVibrate: true,
+  });
   setShoppingListChannel();
 }
 
-const getChannels = async () => {
-  const channels = await Notifications.getNotificationChannelsAsync();
-}
+// const getChannels = async () => {
+//   const channels = await Notifications.getNotificationChannelsAsync();
+// }
 
-getChannels();
+// getChannels();
 
 export default function App() {
   const [fontLoaded, setFontLoaded] = useState(false);

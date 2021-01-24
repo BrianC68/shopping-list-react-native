@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet, Button, Alert, ScrollView, Switch } from 'react-native';
+import {
+  View, Text, StyleSheet, Button, Alert,
+  ScrollView, Switch, TouchableOpacity
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import Input from '../components/UI/Input';
 import ModalComponent from '../components/UI/ModalComponent';
 import AddNewDeptModalContent from '../components/list/AddNewDeptModalContent';
+import PushNotificationsHelpModalContent from '../components/list/PushNotificationsHelpModalContent';
 import Colors from '../constants/Colors';
 import { addItem, setLoading, setNewDepartment } from '../actions/listActions';
 
@@ -15,6 +20,7 @@ const AddListItemScreen = ({ currentListID, shares, departments, userID, addItem
   const [quantity, setQuantity] = useState('');
   const [department, setDepartment] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
+  const [pushModalVisible, setPushModalVisible] = useState(false);
   const [sendNotifications, setSendNotifications] = useState(false);
 
   const toggleNotifications = () => setSendNotifications(previousState => !previousState);
@@ -49,6 +55,10 @@ const AddListItemScreen = ({ currentListID, shares, departments, userID, addItem
     setModalVisible(!modalVisible);
   };
 
+  const togglePushModal = () => {
+    setPushModalVisible(!pushModalVisible);
+  };
+
   const quantityInputHandler = quantity => {
     setQuantity(quantity.replace(/[^0-9]/g, '')); // This will prevent entering non-numeric chars from number keyboard
   }
@@ -63,6 +73,15 @@ const AddListItemScreen = ({ currentListID, shares, departments, userID, addItem
     />
   );
 
+  const pushNotificationsModal = (
+    <ModalComponent
+      visible={pushModalVisible}
+      modalContent={<PushNotificationsHelpModalContent />}
+      title='Push Notifications'
+      onClose={togglePushModal}
+    />
+  );
+
   return (
     <ScrollView>
       <View style={styles.screen}>
@@ -70,9 +89,16 @@ const AddListItemScreen = ({ currentListID, shares, departments, userID, addItem
         <View style={styles.form}>
           {shares.length > 0 &&
             <View style={styles.notifications}>
-              <Text style={styles.notificationsText}>
-                Send Notifications
-          </Text>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View>
+                  <Text style={styles.notificationsText}>
+                    Send Notifications
+              </Text>
+                </View>
+                <TouchableOpacity style={{ paddingLeft: 10 }} onPress={togglePushModal}>
+                  <FontAwesome5 name='question-circle' size={23} color={Colors.amberDark} />
+                </TouchableOpacity>
+              </View>
               <View>
                 <Switch
                   trackColor={{ false: Colors.indigoLight, true: Colors.indigo }}
@@ -122,6 +148,7 @@ const AddListItemScreen = ({ currentListID, shares, departments, userID, addItem
         }
       </View>
       {addDeptModal}
+      {pushNotificationsModal}
     </ScrollView>
   )
 };

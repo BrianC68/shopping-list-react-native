@@ -8,24 +8,28 @@ import {
   KeyboardAvoidingView,
   Platform,
   Text,
-  Alert
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
-import { login, setAuthLoading } from '../../actions/authActions';
+import { login, setAuthLoading, clearError } from '../../actions/authActions';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
-const LoginScreen = ({ login, setAuthLoading }) => {
+const LoginScreen = ({ login, setAuthLoading, clearError }) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
 
   const message = useSelector(state => state.auth.message);
   const error = useSelector(state => state.auth.error);
+  const loading = useSelector(state => state.auth.loading);
 
   const onLogin = () => {
     if (userName === '' || password === '') {
       Alert.alert('Error', 'Please enter a username and password!', [{ text: 'OK' }]);
     } else {
+      clearError();
       const credentials = {
         username: userName,
         password: password
@@ -56,6 +60,11 @@ const LoginScreen = ({ login, setAuthLoading }) => {
             <Text style={styles.error}>{message}</Text>
           </View>
         }
+        {loading && Platform.OS === 'ios' &&
+          <View>
+            <ActivityIndicator size='small' color={Colors.indigo} />
+          </View>
+        }
         <View style={styles.form}>
           <Input
             label='UserName'
@@ -80,7 +89,7 @@ const LoginScreen = ({ login, setAuthLoading }) => {
           <Button color={Colors.indigo} title='Login' onPress={onLogin} />
         </View>
       </KeyboardAvoidingView>
-    </View>
+    </View >
   )
 }
 
@@ -124,6 +133,7 @@ const styles = StyleSheet.create({
 LoginScreen.propTypes = {
   login: PropTypes.func.isRequired,
   setAuthLoading: PropTypes.func.isRequired,
+  clearError: PropTypes.func.isRequired,
 }
 
-export default connect(null, { login, setAuthLoading })(LoginScreen);
+export default connect(null, { login, setAuthLoading, clearError })(LoginScreen);
