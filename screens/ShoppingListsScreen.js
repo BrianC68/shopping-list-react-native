@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
 import * as Notifications from 'expo-notifications';
-import * as Permissions from 'expo-permissions';
 
 import Colors from '../constants/Colors';
 import HeaderButton from '../components/UI/HeaderButton';
@@ -30,9 +29,9 @@ const ShoppingListsScreen = ({ navigation, list: { lists, currentList, loading }
   useEffect(() => {
     let pushToken;
     const getPermissionForNotifications = async () => {
-      let permissionObject = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+      let permissionObject = await Notifications.requestPermissionsAsync();
       if (permissionObject !== 'granted') {
-        permissionObject = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+        permissionObject = await Notifications.requestPermissionsAsync();
       }
       if (permissionObject.status !== 'granted') {
         pushToken = null;
