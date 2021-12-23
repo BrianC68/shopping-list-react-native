@@ -15,7 +15,6 @@ import {
 import Input from '../../components/UI/Input';
 import Colors from '../../constants/Colors';
 import { login, setAuthLoading, clearError } from '../../actions/authActions';
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const LoginScreen = ({ login, setAuthLoading, clearError }) => {
   const [userName, setUserName] = useState('');
